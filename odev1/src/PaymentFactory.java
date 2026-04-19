@@ -1,13 +1,14 @@
 public class PaymentFactory {
 
     public static PaymentMethod create(String type) {
-        switch (type.toLowerCase()) {
-            case "kredi":
-                return new KrediKartiOdeme();
-            case "paypal":
-                return new PaypalOdeme();
-            default:
-                throw new IllegalArgumentException("Geçersiz ödeme yöntemi");
+        try {
+            String className = "com.myapp.payments." + type + "Odeme";
+
+            Class<?> clazz = Class.forName(className);
+            return (PaymentMethod) clazz.getDeclaredConstructor().newInstance();
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Geçersiz ödeme yöntemi", e);
         }
     }
 }
