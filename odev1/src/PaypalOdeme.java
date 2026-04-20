@@ -1,3 +1,4 @@
+@Component
 public class PaypalOdeme implements PaymentMethod {
 
     @Override

@@ -1,27 +1,27 @@
+import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class PaymentFactory {
-    private static final Map<String, String> PAYMENT_CLASSES = Map.of(
-            "kredi", "KrediKartiOdeme",
-            "paypal", "PaypalOdeme"
-    );
+    private final Map<String, PaymentMethod> paymentMethods;
 
-    public static PaymentMethod create(String type) {
+    public PaymentFactory(KrediKartiOdeme krediKartiOdeme, PaypalOdeme paypalOdeme) {
+        this.paymentMethods = new HashMap<>();
+        this.paymentMethods.put("kredi", krediKartiOdeme);
+        this.paymentMethods.put("paypal", paypalOdeme);
+    }
+
+    public PaymentMethod create(String type) {
         if (type == null) {
             throw new IllegalArgumentException("Geçersiz ödeme yöntemi");
         }
 
-        String className = PAYMENT_CLASSES.get(type.trim().toLowerCase());
+        PaymentMethod paymentMethod = paymentMethods.get(type.trim().toLowerCase());
 
-        if (className == null) {
+        if (paymentMethod == null) {
             throw new IllegalArgumentException("Geçersiz ödeme yöntemi");
         }
 
-        try {
-            Class<?> clazz = Class.forName(className);
-            return (PaymentMethod) clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Geçersiz ödeme yöntemi", e);
-        }
+        return paymentMethod;
     }
 }

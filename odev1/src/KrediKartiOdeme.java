@@ -1,3 +1,4 @@
+@Component
 public class KrediKartiOdeme implements PaymentMethod {
 
     @Override

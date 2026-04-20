@@ -1,27 +1,31 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/O7ZBXc2G)
 # odev-1
-1. Ödev: Yeni Ödeme Yöntemi Entegrasyonu (SOLID Prensipleri ile)
 
-Bir ödeme ekranı uygulamasında çalıştığınızı düşünün. Mevcut sistemde hali hazırda bazı ödeme yöntemleri bulunmaktadır.
-Yeni bir ödeme yöntemi sisteme eklenecektir. Bu entegrasyonu gerçekleştirirken aşağıdaki gereksinimleri dikkate almanız beklenmektedir:
+n11 bootcamp için 1.ödevin açıklama metnidir
 
-📌 Beklentiler
-Mevcut kod yapısını mümkün olduğunca bozmadan ilerleyin. 
-Yeni ödeme yöntemini SOLID yazılım prensiplerine uygun şekilde sisteme entegre edin. 
-Özellikle aşağıdaki prensiplere dikkat edin: 
-Open/Closed Principle (OCP): Sistemi değiştirmeden genişletebilme 
-Single Responsibility Principle (SRP): Sınıfların tek bir sorumluluğu olması 
-(Uygunsa diğer SOLID prensiplerini de uygulayabilirsiniz) 
+Projede SOLID prensiplerine dikkat edilmiştir
 
-⚙️ Teknik Gereksinimler
-Uygulamanın basit bir ödeme akışı içermesi yeterlidir. 
-En az: 
-1 adet mevcut ödeme yöntemi (örnek: Kredi Kartı) 
-1 adet yeni eklenen ödeme yöntemi (örnek: PayPal, Apple Pay vb.) 
-Kod yapınız genişlemeye uygun olmalıdır. 
+örneğin interface kullanılarak her yeni payment tipi için mevcut kodu bozmanın önüne geçilmiştir, burada open closed principle'a dikkat edilmeye çalışılmıştır
 
-📤 Teslimat
-Çalışmanızı bir GitHub repository olarak paylaşın. 
-Repository içerisinde: 
-Çalışan kod 
-Kısa bir README dosyası (yaklaşımınızı ve tasarım kararlarınızı açıklayan) 
+bu yapı sayesinde yeni kod eklemek yerine o interface'i implement eden yeni bir ödeme metodu oluşturmak yeterli oluyor
+
+main classında ödeme type'ını seçme ve nesne oluşturma işini direkt bırakmak yerine factory yapısı kullanıldı, burada da single responsibility tarafı korunmaya çalışıldı
+
+PaymentFactory classının sorumluluğu ilgili ödeme nesnesini üretmektir, Main ise sadece akışı başlatır ve kullanıcıdan veriyi alır
+
+projede ek olarak spring mantığına benzer çok küçük bir ApplicationContext yapısı kuruldu
+
+buradaki amaç bean oluşturma ve dependency yönetimi mantığını basit bir şekilde göstermektir
+
+ApplicationContext reflection kullanarak @Component ile işaretlenen classları oluşturur
+
+PaymentService nesnesi de kendi dependency'sini constructor üzerinden alır, böylece nesne üretimi sınıfların içinden çıkıp daha merkezi bir yapıya taşınmış olur
+
+PaymentFactory içinde kredi ve paypal payment methodları map'e eklenir, kullanıcı hangi type'ı girdiyse ilgili nesne buradan alınır
+
+bu sayede hem yeni payment methodu eklemek daha kolay hale gelir hem de kodun sorumlulukları daha net ayrılmış olur
+
+çalıştırmak için proje klasöründe aşağıdaki komutlar kullanılabilir
+
+`javac odev1\src\*.java`
+
+`java -cp odev1\src Main`
